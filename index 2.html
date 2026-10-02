@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Yanni Daily OS</title>
+<style>
+:root{--bg:#05070b;--card:#0d1119;--text:#f8fafc;--muted:#94a3b8;--line:#1e293b;--blue:#1683ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:720px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 14px calc(90px + env(safe-area-inset-bottom))}
+h1{margin:8px 0 2px}.sub,.mini{color:var(--muted)}
+.tabs{position:sticky;top:0;z-index:5;background:#05070bee;display:flex;gap:7px;padding:12px 0}
+.tab{flex:1;padding:11px 6px;border-radius:12px;border:1px solid var(--line);background:#0b1018;color:var(--muted);font-weight:800}
+.tab.active,.btn{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+h2{font-size:18px;margin:0 0 12px}.field{margin:10px 0}
+label{display:block;color:#cbd5e1;font-size:13px;font-weight:650;margin-bottom:6px}
+input,textarea,select{width:100%;background:#070a10;border:1px solid #263244;color:#fff;border-radius:12px;padding:12px;font:inherit}
+textarea{min-height:76px;resize:vertical}
+.range{display:grid;grid-template-columns:1fr 44px;gap:8px;align-items:center}.range input{padding:0}.v{text-align:center;color:#7db9ff;font-weight:800}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;gap:7px;align-items:center;border:1px solid var(--line);padding:10px;border-radius:12px}.check input{width:auto}
+.btn{width:100%;padding:14px;border:0;border-radius:14px;font-weight:800;font-size:16px;margin-top:8px}.secondary{background:#111827;border:1px solid #263244}.danger{background:#2a0c10;color:#ffb4b4}
+.history{display:flex;justify-content:space-between;border:1px solid var(--line);padding:12px;border-radius:13px;margin:8px 0;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.metric{border:1px solid var(--line);border-radius:13px;padding:12px}.metric b{font-size:22px;display:block}
+.chart{height:120px;display:flex;align-items:flex-end;gap:5px;border-bottom:1px solid var(--line)}.bar{flex:1;background:var(--blue);border-radius:5px 5px 0 0;min-height:2px}
+.note{font-size:12px;color:#cbd5e1;border-left:3px solid var(--blue);padding:9px;background:#08111d;border-radius:8px}
+#saved{padding-top:10px;color:#78d89b}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>Yanni Daily OS</h1>
+<div class="sub">Observar → decidir → ejecutar → revisar</div>
+
+<nav class="tabs">
+<button class="tab active" data-tab="today">Hoy</button>
+<button class="tab" data-tab="history">Historial</button>
+<button class="tab" data-tab="dash">Dashboard</button>
+</nav>
+
+<section id="today" class="panel active">
+<div class="card"><h2>📅 Día</h2><div class="field"><label>Fecha</label><input id="date" type="date"></div>
+<div class="note">Los sueños pueden reflejar emociones o experiencias recientes. Su interpretación es una hipótesis, no evidencia de que algo esté ocurriendo en la realidad.</div></div>
+
+<div class="card"><h2>🌅 Estado interno</h2><div id="morning"></div>
+<div class="field"><label>¿Qué siento esta mañana?</label><textarea id="feeling"></textarea></div>
+<div class="field"><label>¿Por qué creo que lo siento?</label><textarea id="why"></textarea></div>
+<div class="field"><label>¿Qué pensamiento está ocupando más espacio en mi mente?</label><textarea id="mainThought"></textarea></div></div>
+
+<div class="card"><h2>🌙 Sueños</h2>
+<div class="field"><label>¿Qué pasó en el sueño?</label><textarea id="dream"></textarea></div>
+<div class="field"><label>Emoción dominante</label><input id="dreamEmotion"></div>
+<div class="field"><label>¿Qué estaba intentando evitar, proteger o conseguir?</label><textarea id="dreamAvoid"></textarea></div>
+<div class="field"><label>¿A qué situación de mi vida real me recuerda?</label><textarea id="dreamReal"></textarea></div>
+<div class="field"><label>¿Qué son hechos y qué es interpretación?</label><textarea id="dreamFacts"></textarea></div>
+<div class="field"><label>¿Qué explicación alternativa podría existir?</label><textarea id="dreamAlternative"></textarea></div></div>
+
+<div class="card"><h2>🎯 Responsabilidades del día</h2>
+<div class="field"><label>Responsabilidad 1</label><input id="task1"></div>
+<div class="field"><label>Responsabilidad 2</label><input id="task2"></div>
+<div class="field"><label>Responsabilidad 3</label><input id="task3"></div>
+<div class="field"><label>Si hoy solo logro UNA cosa, será:</label><input id="priority"></div>
+<div class="field"><label>¿Qué estoy tentado a posponer?</label><textarea id="procrastination"></textarea></div></div>
+
+<div class="card"><h2>🧠 Control personal</h2>
+<div class="field"><label>Hoy puedo controlar</label><textarea id="control"></textarea></div>
+<div class="field"><label>Hoy NO puedo controlar</label><textarea id="noControl"></textarea></div>
+<div class="field"><label>Impulso que debo vigilar</label><input id="impulse"></div>
+<div class="field"><label>¿Estoy reaccionando o decidiendo?</label><textarea id="react"></textarea></div>
+<div class="field"><label>¿Qué haría mi versión más disciplinada?</label><textarea id="disciplinedSelf"></textarea></div>
+<div class="field"><label>Respuesta que elijo</label><textarea id="response"></textarea></div></div>
+
+<div class="card"><h2>🫀 Cuerpo y salud</h2>
+<div class="checks" id="healthChecks"></div>
+<div class="field"><label>¿Cómo se siente mi cuerpo?</label><textarea id="body"></textarea></div>
+<div class="field"><label>¿Hay algún síntoma que debo vigilar?</label><textarea id="symptom"></textarea></div></div>
+
+<div class="card"><h2>💰 Dinero</h2><div class="grid">
+<div class="field"><label>Dinero disponible</label><input type="number" step="0.01" id="money"></div>
+<div class="field"><label>Bankroll poker</label><input type="number" step="0.01" id="bankroll"></div>
+<div class="field"><label>Gastos de hoy</label><input type="number" step="0.01" id="expenses"></div>
+<div class="field"><label>Ingresos de hoy</label><input type="number" step="0.01" id="income"></div></div>
+<div class="field"><label>Dinero pendiente / deudas</label><input type="number" step="0.01" id="debts"></div>
+<div class="field"><label>¿Esta decisión financiera aumenta o reduce mi estabilidad?</label><textarea id="moneyDecision"></textarea></div></div>
+
+<div class="card"><h2>♠️ Poker</h2>
+<div class="field"><label>Plan</label><select id="pokerPlan"><option>Descansar</option><option>Estudiar</option><option>Jugar</option><option>Estudiar + jugar</option></select></div>
+<div class="field"><label>Objetivo de la sesión</label><input id="pokerGoal"></div>
+<div class="field"><label>Resultado ($)</label><input type="number" step="0.01" id="pokerResult"></div>
+<div id="pokerScores"></div>
+<div class="field"><label>Mano más difícil</label><textarea id="hand"></textarea></div>
+<div class="field"><label>¿La decisión fue correcta independientemente del resultado?</label><textarea id="decisionVsResult"></textarea></div>
+<div class="field"><label>Error técnico</label><textarea id="techError"></textarea></div>
+<div class="field"><label>Error emocional</label><textarea id="emoError"></textarea></div>
+<div class="field"><label>Una cosa para estudiar</label><textarea id="pokerLearn"></textarea></div></div>
+
+<div class="card"><h2>👨‍👩‍👦 Familia y relaciones</h2>
+<div class="field"><label>¿Cómo puedo aportar hoy?</label><textarea id="family"></textarea></div>
+<div class="field"><label>¿A quién debo agradecer?</label><textarea id="thank"></textarea></div>
+<div class="field"><label>¿Hay algún conflicto que debo manejar con calma?</label><textarea id="conflict"></textarea></div></div>
+
+<div class="card"><h2>🌱 Construcción del futuro</h2>
+<div class="field"><label>¿Qué acción de hoy tendrá valor dentro de 6 meses?</label><textarea id="sixMonths"></textarea></div>
+<div class="field"><label>¿Qué hice que me acerca a la persona que quiero ser?</label><textarea id="future"></textarea></div>
+<div class="field"><label>¿Qué habilidad voy a mejorar hoy?</label><textarea id="skill"></textarea></div></div>
+
+<div class="card"><h2>🧱 Disciplina</h2><div class="checks" id="disciplineChecks"></div></div>
+
+<div class="card"><h2>🌙 Cierre del día</h2>
+<div class="field"><label>Mejor decisión</label><textarea id="best"></textarea></div>
+<div class="field"><label>Peor decisión / error</label><textarea id="error"></textarea></div>
+<div class="field"><label>Algo que aprendí</label><textarea id="learned"></textarea></div>
+<div class="field"><label>Algo que agradezco</label><textarea id="gratitude"></textarea></div>
+<div class="field"><label>¿Qué debo corregir mañana?</label><textarea id="correct"></textarea></div>
+<div class="field"><label>¿Qué evité o pospuse hoy?</label><textarea id="avoided"></textarea></div>
+<div id="night"></div>
+<button class="btn" id="save">Guardar día</button><div id="saved" class="mini"></div></div>
+</section>
+
+<section id="history" class="panel">
+<div class="card"><h2>📚 Historial</h2><div id="historyList"></div></div>
+<div class="card"><button class="btn secondary" id="export">Exportar respaldo</button>
+<label class="btn secondary" style="display:block;text-align:center">Importar respaldo<input type="file" id="import" accept="application/json" hidden></label>
+<button class="btn danger" id="clear">Borrar todos los registros</button></div>
+</section>
+
+<section id="dash" class="panel">
+<div class="card"><h2>📊 Resumen</h2><div class="grid" id="metrics"></div></div>
+<div class="card"><h2>Ánimo: últimos 7 registros</h2><div id="moodChart"></div></div>
+<div class="card"><h2>🧭 Auditoría semanal</h2>
+<div id="weeklyFields"></div><button class="btn" id="saveWeek">Guardar auditoría semanal</button></div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const rangeGroups={
+ morning:[['sleep','Sueño'],['energy','Energía'],['mood','Ánimo'],['anxiety','Ansiedad / estrés']],
+ pokerScores:[['decision','Calidad de decisiones'],['emoControl','Control emocional']],
+ night:[['health','Salud'],['discipline','Disciplina'],['emotions','Emociones / control']]
+};
+Object.entries(rangeGroups).forEach(([container,items])=>{
+ $(container).innerHTML=items.map(([id,label])=>`<div class="field"><label>${label} (1–10)</label><div class="range"><input type="range" min="1" max="10" value="5" id="${id}"><span class="v" id="${id}V">5</span></div></div>`).join('');
+ items.forEach(([id])=>$(id).addEventListener('input',e=>$(id+'V').textContent=e.target.value));
+});
+['Agua','Comer bien','Movimiento','Higiene','Descanso'].forEach((x,i)=>$('healthChecks').insertAdjacentHTML('beforeend',`<label class="check"><input type="checkbox" id="habit${i}">${x}</label>`));
+['Me levanté cuando debía','Cumplí responsabilidades','Cuidé mi cuerpo','Controlé impulsos','Hice algo por mi futuro'].forEach((x,i)=>$('disciplineChecks').insertAdjacentHTML('beforeend',`<label class="check"><input type="checkbox" id="disc${i}">${x}</label>`));
+const weekly=[['weekBetter','¿Qué mejoró?'],['weekWorse','¿Qué empeoró?'],['weekRepeat','¿Qué patrón se repite?'],['weekAvoid','¿Qué estoy evitando?'],['weekGood','¿Qué me está haciendo bien?'],['weekBad','¿Qué me está haciendo daño?'],['weekWin','Victoria #1 de la semana'],['weekError','Error #1 de la semana'],['weekChange','UN cambio para la próxima semana']];
+$('weeklyFields').innerHTML=weekly.map(([id,l])=>`<div class="field"><label>${l}</label><textarea id="${id}"></textarea></div>`).join('');
+
+const textIds=['date','feeling','why','mainThought','dream','dreamEmotion','dreamAvoid','dreamReal','dreamFacts','dreamAlternative','task1','task2','task3','priority','procrastination','control','noControl','impulse','react','disciplinedSelf','response','body','symptom','money','bankroll','expenses','income','debts','moneyDecision','pokerPlan','pokerGoal','pokerResult','hand','decisionVsResult','techError','emoError','pokerLearn','family','thank','conflict','sixMonths','future','skill','best','error','learned','gratitude','correct','avoided','sleep','energy','mood','anxiety','decision','emoControl','health','discipline','emotions'];
+const ids=[...textIds,...Array.from({length:5},(_,i)=>'habit'+i),...Array.from({length:5},(_,i)=>'disc'+i)];
+const weekIds=weekly.map(x=>x[0]);
+const today=()=>new Date().toLocaleDateString('en-CA');
+const readData=()=>{try{return JSON.parse(localStorage.getItem('yanniOS')||'{}')}catch{return {}}};
+const writeData=x=>localStorage.setItem('yanniOS',JSON.stringify(x));
+function value(id){const e=$(id);return e.type==='checkbox'?e.checked:e.value}
+function setValue(id,v){const e=$(id);if(e.type==='checkbox')e.checked=!!v;else e.value=v??(e.type==='range'?'5':'');if(e.type==='range')$(id+'V').textContent=e.value}
+function loadDay(date){const r=readData()[date];ids.forEach(id=>setValue(id,r?r[id]:undefined));setValue('date',date);$('saved').textContent=''}
+$('date').value=today();
+$('date').addEventListener('change',e=>loadDay(e.target.value));
+$('save').onclick=()=>{const d=value('date')||today(),all=readData(),o={};ids.forEach(id=>o[id]=value(id));all[d]=o;writeData(all);$('saved').textContent='✓ Día guardado en este dispositivo';render()};
+
+function openTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));location.hash=id;scrollTo(0,0)}
+document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>openTab(x.dataset.tab));
+
+function avg(rows,key){const nums=rows.map(x=>Number(x[key])).filter(Number.isFinite);return nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1):'—'}
+function render(){
+ const entries=Object.entries(readData()).sort((a,b)=>b[0].localeCompare(a[0]));
+ $('historyList').innerHTML=entries.length?entries.map(([d,r])=>`<div class="history" data-date="${d}"><div><b>${d}</b><div class="mini">Ánimo ${r.mood||'—'} · Disciplina ${r.discipline||'—'} · Poker ${r.pokerResult||0}</div></div><span>Editar ›</span></div>`).join(''):'<div class="mini">Aún no hay registros. Guarda tu primer día.</div>';
+ document.querySelectorAll('.history').forEach(e=>e.onclick=()=>{loadDay(e.dataset.date);openTab('today')});
+ const rows=entries.map(x=>x[1]);
+ $('metrics').innerHTML=`<div class="metric"><b>${entries.length}</b><span>Días</span></div><div class="metric"><b>${avg(rows,'mood')}</b><span>Ánimo</span></div><div class="metric"><b>${avg(rows,'sleep')}</b><span>Sueño</span></div><div class="metric"><b>${avg(rows,'discipline')}</b><span>Disciplina</span></div>`;
+ $('moodChart').innerHTML=entries.length?`<div class="chart">${entries.slice(0,7).reverse().map(([d,r])=>`<div class="bar" title="${d}: ${r.mood||0}" style="height:${Number(r.mood||0)*10}%"></div>`).join('')}</div>`:'<div class="mini">Registra algunos días para ver la gráfica.</div>';
+}
+$('export').onclick=()=>{const backup={days:readData(),weeks:JSON.parse(localStorage.getItem('yanniWeeks')||'{}')};const b=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='yanni-daily-os-backup.json';a.click();URL.revokeObjectURL(a.href)};
+$('import').onchange=async e=>{try{const j=JSON.parse(await e.target.files[0].text());writeData(j.days||j);if(j.weeks)localStorage.setItem('yanniWeeks',JSON.stringify(j.weeks));render();alert('Respaldo importado')}catch{alert('No pude leer ese respaldo')}};
+$('clear').onclick=()=>{if(confirm('¿Seguro que quieres borrar TODOS los registros guardados en este dispositivo?')){localStorage.removeItem('yanniOS');render();loadDay(today())}};
+function weekKey(){const d=new Date(),start=new Date(d.getFullYear(),0,1);return d.getFullYear()+'-W'+String(Math.ceil((((d-start)/86400000)+start.getDay()+1)/7)).padStart(2,'0')}
+$('saveWeek').onclick=()=>{const w=JSON.parse(localStorage.getItem('yanniWeeks')||'{}'),o={};weekIds.forEach(id=>o[id]=value(id));w[weekKey()]=o;localStorage.setItem('yanniWeeks',JSON.stringify(w));alert('Auditoría semanal guardada')};
+const hash=location.hash.slice(1);if(['today','history','dash'].includes(hash))openTab(hash);
+render();
+</script>
+</body>
+</html>
